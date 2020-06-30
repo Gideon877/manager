@@ -39,8 +39,12 @@ public class TeamServiceImpl implements TeamService {
     public void deleteTeam(long id) {
         Optional<Team> teamDb = this.teamRepository.findById(id);
         if(teamDb.isPresent()) {
-            this.teamRepository.delete(teamDb.get());
+           try {
+               this.teamRepository.delete(teamDb.get());
+           } catch (Exception e) {
+               throw new ResourceNotFoundException(e.getMessage());
+           }
         }
-        throw new ResourceNotFoundException("Record not found with id: " + id);
+//        throw new ResourceNotFoundException("Record not found with id: " + id);
     }
 }
